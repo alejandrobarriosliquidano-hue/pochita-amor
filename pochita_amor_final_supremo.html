@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Naomi ∞ Amor Supremo</title>
+
+<style>
+body{
+  margin:0;
+  overflow:hidden;
+  background:black;
+  font-family:Arial, sans-serif;
+  color:white;
+}
+
+/* INTRO */
+.intro{
+  position:fixed;
+  width:100%;
+  height:100%;
+  background:black;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-size:2rem;
+  animation:fadeOut 4s forwards 3s;
+  z-index:10;
+}
+@keyframes fadeOut{
+  to{opacity:0;visibility:hidden;}
+}
+
+/* GALAXIA */
+canvas{
+  position:absolute;
+  top:0;
+  left:0;
+  z-index:0;
+}
+
+/* TEXTO */
+.name{
+  position:absolute;
+  top:12%;
+  width:100%;
+  text-align:center;
+  font-size:2rem;
+  text-shadow:0 0 20px #ff4d6d;
+}
+
+/* POCHITA */
+.pochita{
+  width:170px;
+  height:120px;
+  background:#ffb347;
+  border-radius:70px;
+  position:absolute;
+  top:60%;
+  left:20%;
+  z-index:2;
+  box-shadow:0 0 60px rgba(255,180,80,1);
+  transition:transform .3s;
+}
+
+.eye{
+  width:26px;height:26px;background:white;border-radius:50%;
+  position:absolute;top:35px;
+}
+.eye.left{ left:45px;}
+.eye.right{ right:45px;}
+
+.pupil{
+  width:12px;height:12px;background:black;border-radius:50%;
+  position:absolute;top:7px;left:7px;
+}
+
+.shine{
+  width:6px;height:6px;background:white;border-radius:50%;
+  position:absolute;top:4px;left:4px;
+}
+
+.mouth{
+  width:40px;height:20px;border-bottom:5px solid black;
+  border-radius:0 0 50px 50px;
+  position:absolute;bottom:30px;left:65px;
+}
+
+.blush{
+  width:22px;height:12px;background:#ff6f91;
+  border-radius:50%;
+  position:absolute;top:65px;opacity:0.6;
+}
+.blush.left{ left:20px;}
+.blush.right{ right:20px;}
+
+/* MOTOSIERRA TIERNA */
+.chainsaw{
+  position:absolute;
+  right:-45px;
+  top:40px;
+  width:60px;
+  height:20px;
+  background:#ccc;
+  border-radius:5px;
+  box-shadow:0 0 10px #fff;
+}
+
+/* FINAL */
+.final{
+  position:fixed;
+  width:100%;
+  top:40%;
+  text-align:center;
+  font-size:3rem;
+  color:#ff4d6d;
+  text-shadow:0 0 30px white;
+  display:none;
+  z-index:20;
+}
+
+/* CARTA */
+.letter{
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  width:85%;
+  max-width:330px;
+  background:white;
+  color:black;
+  padding:20px;
+  border-radius:20px;
+  display:none;
+  z-index:5;
+}
+button{
+  padding:8px 14px;
+  border:none;
+  border-radius:20px;
+  background:#ff4d6d;
+  color:white;
+  margin:5px;
+}
+.ui{
+  position:absolute;
+  bottom:15px;
+  width:100%;
+  text-align:center;
+  z-index:3;
+}
+</style>
+</head>
+<body>
+
+<div class="intro">Hola Naomi 💛</div>
+
+<canvas id="stars"></canvas>
+
+<div class="name" id="nameText"></div>
+
+<div class="pochita" id="pet">
+  <div class="eye left">
+    <div class="pupil"><div class="shine"></div></div>
+  </div>
+  <div class="eye right">
+    <div class="pupil"><div class="shine"></div></div>
+  </div>
+  <div class="mouth"></div>
+  <div class="blush left"></div>
+  <div class="blush right"></div>
+  <div class="chainsaw"></div>
+</div>
+
+<div class="ui">
+  <button onclick="speakName()">🔊 Decir Naomi</button>
+  <button onclick="openLetter()">💌 Carta</button>
+</div>
+
+<div class="letter" id="letter">
+  Naomi 💛<br><br>
+  Eres mi lugar favorito en todo el universo.  
+  Si el destino me diera mil vidas…  
+  en todas te elegiría a ti.<br><br>
+  Con todo mi amor eterno,<br>
+  Hugo 💞
+</div>
+
+<div class="final" id="finalText">TE AMO NAOMI 💖</div>
+
+<audio id="music" src="until-i-found-you.mp3"></audio>
+
+<script>
+/* TEXTO */
+const text="NAOMI ✨";
+let i=0;
+function type(){
+  if(i<text.length){
+    document.getElementById("nameText").innerHTML+=text[i];
+    i++;
+    setTimeout(type,150);
+  }
+}
+setTimeout(type,2000);
+
+/* GALAXIA */
+const canvas=document.getElementById("stars");
+const ctx=canvas.getContext("2d");
+canvas.width=window.innerWidth;
+canvas.height=window.innerHeight;
+let stars=[];
+for(let i=0;i<200;i++){
+  stars.push({x:Math.random()*canvas.width,
+              y:Math.random()*canvas.height,
+              r:Math.random()*2});
+}
+function drawStars(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  ctx.fillStyle="white";
+  stars.forEach(s=>{
+    ctx.beginPath();
+    ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+    ctx.fill();
+    s.y+=0.3;
+    if(s.y>canvas.height)s.y=0;
+  });
+  requestAnimationFrame(drawStars);
+}
+drawStars();
+
+/* MUSICA */
+const music=document.getElementById("music");
+function startMusic(){
+  music.volume=0;
+  music.play().catch(()=>{});
+  let fade=setInterval(()=>{
+    if(music.volume<0.7){
+      music.volume+=0.05;
+    }else clearInterval(fade);
+  },200);
+}
+const pet=document.getElementById("pet");
+pet.addEventListener("touchstart",startMusic);
+pet.addEventListener("mousedown",startMusic);
+
+/* SEGUIR DEDO */
+document.addEventListener("mousemove",e=>{
+  pet.style.left=(e.clientX-80)+"px";
+  pet.style.top=(e.clientY-60)+"px";
+});
+document.addEventListener("touchmove",e=>{
+  const t=e.touches[0];
+  pet.style.left=(t.clientX-80)+"px";
+  pet.style.top=(t.clientY-60)+"px";
+});
+
+/* VOZ */
+function speakName(){
+  const msg=new SpeechSynthesisUtterance("Naomi");
+  msg.lang="es-ES";
+  speechSynthesis.speak(msg);
+}
+
+/* CARTA */
+function openLetter(){
+  const pass=prompt("Ingresa la contraseña:");
+  if(pass==="9284"){
+    document.getElementById("letter").style.display="block";
+    setTimeout(()=>{
+      document.getElementById("finalText").style.display="block";
+    },4000);
+  }else{
+    alert("Contraseña incorrecta 💔");
+  }
+}
+</script>
+
+</body>
+</html>
